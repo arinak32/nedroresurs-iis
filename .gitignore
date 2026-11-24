@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.pyc
+.env
+node_modules/
+frontend/dist/
+.pytest_cache/
+.DS_Store
+osrm-data/
+backups/
+frontend/package-lock.json

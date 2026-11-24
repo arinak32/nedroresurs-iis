@@ -1,0 +1,117 @@
+/* Дизайн-система ИИС «Недроресурс» (глава 2, раздел 2.4.1, таблица 2.4) */
+:root {
+  --graphite: #23262f;
+  --graphite-2: #3a3f4b;
+  --sand: #e3893b;
+  --sand-light: #fcebd9;
+  --sand-soft: #f2c08f;
+  --page: #f3f1ec;
+  --card: #ffffff;
+  --line: #ece8e1;
+  --text: #1d2027;
+  --text-2: #8b8f98;
+  --text-dark: #c9cdd4;
+  --ok: #2fa36b;      --ok-bg: #dff3e8;
+  --warn: #c9881e;    --warn-bg: #fbf0d9;
+  --err: #d9564a;     --err-bg: #fbe2df;
+  --info: #4f6fa3;    --info-bg: #e6ecf5;
+  --r-card: 22px;
+  font-family: 'Manrope', system-ui, sans-serif;
+  color: var(--text);
+  background: var(--page);
+  font-size: 14px;
+}
+* { box-sizing: border-box; }
+body { margin: 0; }
+h1 { font-size: 30px; font-weight: 700; margin: 0; letter-spacing: -0.01em; }
+h2 { font-size: 18px; font-weight: 700; margin: 0; }
+h3 { font-size: 15px; font-weight: 700; margin: 0; }
+.muted { color: var(--text-2); }
+.small { font-size: 12px; }
+.num-l { font-size: 30px; font-weight: 800; letter-spacing: -0.01em; }
+
+/* каркас */
+.shell { display: flex; min-height: 100vh; }
+.side { width: 256px; flex-shrink: 0; background: var(--graphite); color: #fff; padding: 22px 18px; display: flex; flex-direction: column; gap: 22px; position: sticky; top: 0; height: 100vh; }
+.logo { display: flex; align-items: center; gap: 10px; }
+.logo b { font-size: 17px; font-weight: 800; display: block; }
+.logo span { font-size: 8px; letter-spacing: .12em; color: var(--sand-soft); font-weight: 600; }
+.me { display: flex; flex-direction: column; gap: 4px; }
+.avatar { width: 56px; height: 56px; border-radius: 50%; background: var(--graphite-2); color: var(--sand); display: grid; place-items: center; font-weight: 800; font-size: 20px; margin-bottom: 8px; }
+.me .role { color: var(--text-2); font-size: 13px; }
+.me .name { font-weight: 700; font-size: 16px; }
+.menu { display: flex; flex-direction: column; gap: 4px; flex: 1; }
+.menu a { display: flex; align-items: center; gap: 12px; padding: 11px 14px; border-radius: 14px; color: var(--text-dark); text-decoration: none; font-weight: 500; }
+.menu a:hover { background: var(--graphite-2); }
+.menu a.active { background: var(--sand); color: #fff; font-weight: 700; }
+.menu .ico { width: 18px; text-align: center; opacity: .8; }
+.logout { background: none; border: 1px solid var(--graphite-2); color: var(--text-dark); border-radius: 12px; padding: 9px; cursor: pointer; font: inherit; }
+.main { flex: 1; padding: 28px 32px; display: flex; flex-direction: column; gap: 20px; min-width: 0; }
+.head { display: flex; align-items: center; gap: 12px; }
+.head .t { flex: 1; }
+.head .sub { color: var(--text-2); margin-bottom: 4px; }
+
+/* элементы */
+.card { background: var(--card); border: 1px solid var(--line); border-radius: var(--r-card); padding: 22px; }
+.row { display: flex; gap: 20px; align-items: flex-start; }
+.grow { flex: 1; min-width: 0; }
+.btn { border: 0; border-radius: 100px; padding: 12px 20px; font: inherit; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px; white-space: nowrap; }
+.btn:disabled { opacity: .5; cursor: default; }
+.btn-main { background: var(--sand); color: #fff; }
+.btn-dark { background: var(--graphite); color: #fff; }
+.btn-light { background: #fff; color: var(--sand); border: 1px solid var(--line); }
+.btn-text { background: none; color: var(--sand); padding: 6px 4px; }
+.chip { display: inline-block; padding: 5px 12px; border-radius: 100px; font-weight: 600; font-size: 13px; white-space: nowrap; }
+.chip.ok { background: var(--ok-bg); color: var(--ok); }
+.chip.warn { background: var(--warn-bg); color: var(--warn); }
+.chip.err { background: var(--err-bg); color: var(--err); }
+.chip.info { background: var(--info-bg); color: var(--info); }
+.chip.sand { background: var(--sand-light); color: var(--sand); }
+.tabs { display: flex; gap: 10px; flex-wrap: wrap; }
+.tab { background: #fff; border: 1px solid var(--line); border-radius: 100px; padding: 8px 14px; font: inherit; font-weight: 600; cursor: pointer; }
+.tab small { color: var(--text-2); margin-left: 6px; }
+.tab.on { background: var(--graphite); color: #fff; border-color: var(--graphite); }
+.tab.on small { color: var(--sand-soft); }
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field label { font-size: 12px; color: var(--text-2); }
+.input, select.input, textarea.input { border: 1px solid var(--line); border-radius: 12px; padding: 11px 14px; font: inherit; background: #fff; color: var(--text); width: 100%; }
+.input:focus { outline: 2px solid var(--sand-soft); border-color: var(--sand); }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.alert { border-radius: 12px; padding: 12px 14px; font-size: 13px; font-weight: 600; }
+.alert.ok { background: var(--ok-bg); color: var(--ok); }
+.alert.warn { background: var(--warn-bg); color: var(--warn); }
+.alert.err { background: var(--err-bg); color: var(--err); }
+.kv { display: flex; justify-content: space-between; gap: 12px; padding: 6px 0; }
+.kv span:first-child { color: var(--text-2); }
+.kv span:last-child { font-weight: 600; text-align: right; }
+.bar { height: 8px; border-radius: 8px; background: #efebe4; overflow: hidden; }
+.bar > div { height: 100%; background: var(--sand); border-radius: 8px; }
+
+/* таблица */
+table.t { width: 100%; border-collapse: collapse; }
+table.t th { text-align: left; font-weight: 500; font-size: 12px; color: var(--text-2); padding: 8px 12px; }
+table.t td { padding: 12px; border-top: 1px solid var(--line); vertical-align: middle; }
+table.t tr.click { cursor: pointer; }
+table.t tr.click:hover td { background: #faf8f4; }
+table.t tr.sel td { background: var(--sand-light); }
+table.t td .sub { font-size: 12px; color: var(--text-2); }
+.src-etp { color: var(--info); }
+
+/* окно */
+.overlay { position: fixed; inset: 0; background: rgba(29, 32, 39, .45); display: grid; place-items: center; z-index: 10; padding: 20px; }
+.modal { background: var(--page); border-radius: 24px; width: min(860px, 100%); max-height: 92vh; overflow: auto; padding: 26px; display: flex; flex-direction: column; gap: 18px; }
+
+/* вход */
+.login { min-height: 100vh; display: flex; gap: 24px; padding: 24px; }
+.login .promo { flex: 1; background: var(--graphite); color: #fff; border-radius: 28px; padding: 56px; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; }
+.login .promo h1 { font-size: 40px; line-height: 50px; max-width: 520px; color: #fff; }
+.login .promo p { color: var(--text-dark); }
+.login .stats { display: flex; gap: 16px; }
+.login .stats div { flex: 1; border: 1px solid rgba(255,255,255,.12); border-radius: 18px; padding: 20px; }
+.login .stats b { display: block; font-size: 30px; font-weight: 800; color: var(--sand-soft); }
+.login .circle { position: absolute; border-radius: 50%; background: var(--sand); }
+.login .form { width: 520px; display: grid; place-items: center; }
+.login .box { width: 440px; display: flex; flex-direction: column; gap: 18px; }
+.spinner { color: var(--text-2); padding: 20px; }
+@media (max-width: 1000px) { .login .promo { display: none; } .login .form { width: 100%; } }
