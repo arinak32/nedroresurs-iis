@@ -22,8 +22,8 @@ export default function Login() {
         <div className="circle" style={{ width: 360, height: 360, right: -110, top: 120, opacity: .1 }} />
         <Logo />
         <div style={{ position: 'relative' }}>
-          <h1>Добыча, продажа и доставка песка — в одной системе</h1>
-          <p>Заказы, рейсы, остатки на площадках, документы и прогноз спроса для ООО «Недроресурс»</p>
+          <h1>Добыча, продажа и доставка песка в одной системе</h1>
+          <p>Заказы, рейсы, остатки на площадках, документы и прогноз спроса для ООО «Недроресурс»</p>
         </div>
         <div className="stats">
           <div><b>4</b>карьера</div><div><b>8</b>самосвалов</div><div><b>60 000 м³</b>вместимость площадок</div>
@@ -39,7 +39,7 @@ export default function Login() {
           {err && <div className="alert err">{err}</div>}
           <button className="btn btn-main" disabled={busy || !l || !p}>{busy ? 'Входим…' : 'Войти →'}</button>
           <div className="alert" style={{ background: 'var(--page)', color: 'var(--text-2)', fontWeight: 500 }}>
-            Разделы меню зависят от роли: директор, менеджер, бухгалтер, юрист, механик или водитель
+            Разделы меню зависят от роли: директор, менеджер, бухгалтер, юрист, механик или водитель
           </div>
         </form>
       </div>
