@@ -1,5 +1,5 @@
 import { keepPreviousData, useQuery, useQueryClient } from '@tanstack/react-query'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { api, type Order, type OrdersPage, type OrderStatus, type Product } from '../api'
 import { useAuth } from '../auth'
 import { Head } from '../components/Layout'
@@ -33,8 +33,14 @@ export default function Orders() {
     queryKey: ['orders', status, product, source, q],
     queryFn: () => api.get<OrdersPage>('/api/orders', { status, product_id: product || undefined, source, q }),
     placeholderData: keepPreviousData,
+    refetchInterval: 30000,
   })
   const counts = data.data?.counts ?? {}
+  // если статус выбранного заказа изменился (например, водитель доставил рейс) — обновить карточку
+  useEffect(() => {
+    const fresh = sel && data.data?.items.find(x => x.id === sel.id)
+    if (fresh && fresh.status !== sel!.status) setSel(fresh)
+  }, [data.data])
   const all = Object.values(counts).reduce((a, b) => a + (b ?? 0), 0)
 
   const act = async (action: string) => {

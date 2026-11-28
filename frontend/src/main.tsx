@@ -16,7 +16,7 @@ import Stock, { SiteCards } from './pages/Stock'
 import Trips from './pages/Trips'
 import Driver from './pages/Driver'
 
-const qc = new QueryClient({ defaultOptions: { queries: { retry: 1, refetchOnWindowFocus: false } } })
+const qc = new QueryClient({ defaultOptions: { queries: { retry: 1, refetchOnWindowFocus: true } } })
 
 function Guard({ children, driver = false }: { children: React.ReactNode; driver?: boolean }) {
   const { user, loading } = useAuth()

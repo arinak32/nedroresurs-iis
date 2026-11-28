@@ -21,7 +21,9 @@ export default function Trips() {
   const [busy, setBusy] = useState(false)
   const [unplanned, setUnplanned] = useState<Plan['unplanned']>([])
   const canEdit = user?.role === 'manager'
-  const plan = useQuery({ queryKey: ['plan', day], queryFn: () => api.get<Plan | null>('/api/route-plans', { plan_date: day }) })
+  // утверждённый план обновляется каждые 15 секунд: отметки водителей появляются без перезагрузки страницы
+  const plan = useQuery({ queryKey: ['plan', day], queryFn: () => api.get<Plan | null>('/api/route-plans', { plan_date: day }),
+    refetchInterval: q => (q.state.data?.status === 'approved' ? 15000 : false) })
   const p = plan.data
 
   const run = async (fn: () => Promise<Plan>) => {

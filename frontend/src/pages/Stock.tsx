@@ -6,7 +6,7 @@ import { Head } from '../components/Layout'
 import { dateRu, m3, num } from '../format'
 
 export function SiteCards() {
-  const sites = useQuery({ queryKey: ['stock'], queryFn: () => api.get<Site[]>('/api/stock') })
+  const sites = useQuery({ queryKey: ['stock'], queryFn: () => api.get<Site[]>('/api/stock'), refetchInterval: 30000 })
   return (
     <div className="row">
       {sites.data?.map(s => (
