@@ -3,9 +3,9 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from ..db import get_db
-from ..models import Product, Quarry, Role, StorageSite, Vehicle
-from ..schemas import ProductOut, QuarryOut, SiteOut, Tariffs, VehicleOut
-from ..security import OFFICE, STOCK_READ, current_user, require
+from ..models import Product, Quarry, Role, StorageSite
+from ..schemas import ProductOut, QuarryOut, SiteOut, Tariffs
+from ..security import STOCK_READ, current_user, require
 from ..services import settings_store, stock
 
 router = APIRouter(prefix="/api", tags=["Справочники и настройки"])
@@ -30,11 +30,6 @@ def stock_view(db: Session = Depends(get_db)):
         out.append(SiteOut(id=s.id, name=s.name, product_id=s.product_id, product_name=s.product.name,
                            capacity_m3=s.capacity_m3, volume_m3=v, fill_pct=round(float(v / s.capacity_m3 * 100), 1)))
     return out
-
-
-@router.get("/vehicles", response_model=list[VehicleOut], dependencies=[Depends(require(*OFFICE))])
-def vehicles(db: Session = Depends(get_db)):
-    return db.scalars(select(Vehicle).order_by(Vehicle.kind, Vehicle.id)).all()
 
 
 @router.get("/settings/tariffs", response_model=Tariffs, dependencies=[Depends(current_user)])

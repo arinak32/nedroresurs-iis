@@ -253,6 +253,9 @@ class Vehicle(Base):
     odometer_km: Mapped[int] = mapped_column(Integer, default=0)
     engine_hours: Mapped[int] = mapped_column(Integer, default=0)
     driver_id: Mapped[int | None] = mapped_column(ForeignKey("users.id"))  # закреплённый водитель
+    # ТО по пробегу (самосвалы) или по моточасам (экскаваторы, погрузчики)
+    service_interval: Mapped[int] = mapped_column(Integer, default=15000)
+    last_service_at: Mapped[int] = mapped_column(Integer, default=0)  # пробег/моточасы на последнем ТО
     driver: Mapped[User | None] = relationship()
 
 
@@ -262,8 +265,11 @@ class MaintenanceRecord(Base):
     vehicle_id: Mapped[int] = mapped_column(ForeignKey("vehicles.id"))
     kind: Mapped[str] = mapped_column(String(20))  # «ТО» или «ремонт»
     started_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    planned_end: Mapped[date | None] = mapped_column(Date)
     finished_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     description: Mapped[str | None] = mapped_column(Text)
+    mechanic_id: Mapped[int | None] = mapped_column(ForeignKey("users.id"))
+    mechanic: Mapped[User | None] = relationship()
 
 
 class RoutePlan(Base):

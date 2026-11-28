@@ -14,6 +14,7 @@ import Login from './pages/Login'
 import Orders from './pages/Orders'
 import Stock, { SiteCards } from './pages/Stock'
 import Trips from './pages/Trips'
+import Fleet from './pages/Fleet'
 import Driver from './pages/Driver'
 
 const qc = new QueryClient({ defaultOptions: { queries: { retry: 1, refetchOnWindowFocus: true } } })
@@ -52,6 +53,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
               <Route path="orders" element={<Orders />} />
               <Route path="stock" element={<Stock />} />
               <Route path="trips" element={<Trips />} />
+              <Route path="fleet" element={<Fleet />} />
               <Route path="*" element={<Soon />} />
             </Route>
           </Routes>

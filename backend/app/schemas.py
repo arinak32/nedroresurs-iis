@@ -167,14 +167,57 @@ class ProductionOut(BaseModel):
     author: str | None
 
 
-class VehicleOut(ORM):
+class MaintenanceOut(BaseModel):
+    id: int
+    kind: str
+    description: str | None
+    started_at: datetime
+    planned_end: date | None
+    finished_at: datetime | None
+    mechanic: str | None
+
+
+class VehicleOut(BaseModel):
     id: int
     kind: VehicleKind
     name: str
     model: str
+    reg_number: str | None
     capacity_m3: Decimal
     status: VehicleStatus
     odometer_km: int
+    engine_hours: int
+    counter_unit: str            # «км» или «моточ.»
+    service_interval: int
+    service_left: int            # сколько осталось до ТО (может быть < 0 — ТО просрочено)
+    service_soon: bool
+    driver_id: int | None
+    driver_name: str | None
+    current: MaintenanceOut | None
+    history: list[MaintenanceOut] = []
+
+
+class MaintenanceStart(BaseModel):
+    kind: str = Field(pattern="^(ТО|ремонт)$")
+    description: str | None = Field(default=None, max_length=1000)
+    planned_end: date | None = None
+
+
+class MaintenanceFinish(BaseModel):
+    counter: int | None = Field(default=None, ge=0)   # пробег или моточасы на момент окончания
+
+
+class VehiclePatch(BaseModel):
+    driver_id: int | None = None
+    counter: int | None = Field(default=None, ge=0)
+    service_interval: int | None = Field(default=None, gt=0)
+    reg_number: str | None = None
+
+
+class DriverShort(BaseModel):
+    id: int
+    full_name: str
+    vehicle_name: str | None
 
 
 class PlanRequest(BaseModel):
@@ -219,6 +262,7 @@ class PlanOut(BaseModel):
     trucks: list[TruckOut]
     unplanned: list[dict] = []
     orders_count: int
+    blocked: list[int] = []      # рейсы на самосвалах, ушедших в ремонт после утверждения плана
 
 
 class MoveTrip(BaseModel):

@@ -10,6 +10,7 @@ from ..models import (Client, ClientAddress, DocKind, Order, PlanStatus, Product
 from ..schemas import (DeliverIn, DeliverOut, DriverDay, DriverEvent, MoveTrip, PlanOut, PlanRequest, TripOut,
                        TruckOut)
 from ..security import require
+from ..services import fleet
 from ..services import trips as svc
 
 router = APIRouter(prefix="/api", tags=["Рейсы"])
@@ -40,7 +41,8 @@ def plan_out(db: Session, plan: RoutePlan, unplanned: list[dict] | None = None) 
                    trips=[trip_out(db, t) for t in trips], unplanned=unplanned or [],
                    trucks=[TruckOut(id=v.id, name=v.name, driver_name=v.driver.full_name if v.driver else None,
                                     status=v.status.value) for v in trucks],
-                   orders_count=len({t.order_id for t in trips}))
+                   orders_count=len({t.order_id for t in trips}),
+                   blocked=[t.id for t in fleet.blocked_trips(db, plan)])
 
 
 @router.post("/route-plans", response_model=PlanOut, status_code=201, summary="Рассчитать план рейсов на дату")

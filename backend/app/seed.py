@@ -49,11 +49,16 @@ def seed_reference(db):
     for q, (num, to) in zip(quarries, [("БРН 0001 ТЭ", date(2031, 3, 15)), ("БРН 0002 ТЭ", date(2031, 3, 15)),
                                        ("БРН 0003 ТЭ", date(2027, 7, 1)), ("БРН 0004 ТЭ", date(2027, 7, 1))]):
         db.add(License(quarry_id=q.id, number=num, valid_to=to))
+    # пробег и моточасы — условные начальные значения, механик заменит их фактическими
     for i in range(1, 9):
-        db.add(Vehicle(kind=VehicleKind.dump_truck, name=f"Самосвал №{i}", model="SsangYong", capacity_m3=Decimal(30)))
+        km = 138000 + i * 3100
+        db.add(Vehicle(kind=VehicleKind.dump_truck, name=f"Самосвал №{i}", model="SsangYong", capacity_m3=Decimal(30),
+                       odometer_km=km, service_interval=15000, last_service_at=km - 4000 * (i % 4) - 1200))
     for i in (1, 2):
-        db.add(Vehicle(kind=VehicleKind.excavator, name=f"Экскаватор №{i}", model="Hitachi", capacity_m3=Decimal("1.5")))
-        db.add(Vehicle(kind=VehicleKind.loader, name=f"Погрузчик №{i}", model="Фронтальный погрузчик", capacity_m3=Decimal(2)))
+        db.add(Vehicle(kind=VehicleKind.excavator, name=f"Экскаватор №{i}", model="Hitachi", capacity_m3=Decimal("1.5"),
+                       engine_hours=8000 + 400 * i, service_interval=250, last_service_at=8000 + 400 * i - 170 + 60 * i))
+        db.add(Vehicle(kind=VehicleKind.loader, name=f"Погрузчик №{i}", model="Фронтальный погрузчик", capacity_m3=Decimal(2),
+                       engine_hours=5300 + 200 * i, service_interval=250, last_service_at=5300 + 200 * i - 230 + 40 * i))
     return True
 
 

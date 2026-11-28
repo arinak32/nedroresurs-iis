@@ -100,8 +100,9 @@ def build_plan(db: Session, plan_date: date) -> tuple[RoutePlan, list[dict]]:
 
 
 def move_trip(db: Session, plan: RoutePlan, trip: Trip, vehicle_id: int) -> Trip:
-    if plan.status != PlanStatus.draft:
-        raise HTTPException(409, "Утверждённый план менять нельзя")
+    # в утверждённом плане можно перенести только рейс, который ещё не начат (например, самосвал ушёл в ремонт)
+    if plan.status != PlanStatus.draft and trip.status != TripStatus.planned:
+        raise HTTPException(409, "Рейс уже начат — перенести его нельзя")
     truck = db.get(Vehicle, vehicle_id)
     if truck is None or truck.kind != VehicleKind.dump_truck or truck.status != VehicleStatus.on_line:
         raise HTTPException(422, "Самосвал недоступен для рейсов")
@@ -165,6 +166,9 @@ def mark_delivered(db: Session, trip_id: int, driver: User, actual_m3: Decimal, 
         TripStatus.delivered, actual_m3, datetime.now(timezone.utc), event_id)
     stock.add_movement(db, site_id, MovementKind.shipment, -actual_m3, trip_id=trip.id, order_id=order.id,
                        comment=f"Рейс по заказу {order.number}")
+    if trip.vehicle_id and trip.distance_km:   # пробег самосвала ведётся автоматически
+        truck = db.get(Vehicle, trip.vehicle_id)
+        truck.odometer_km += int(round(float(trip.distance_km)))
     unit = Decimal(order.price_m3) + Decimal(order.delivery_m3)
     amount = (unit * actual_m3).quantize(Decimal("0.01"), ROUND_HALF_UP)
     vat = pricing.vat_included(amount, Decimal(order.vat_rate))

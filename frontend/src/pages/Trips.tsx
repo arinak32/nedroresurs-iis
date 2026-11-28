@@ -58,6 +58,11 @@ export default function Trips() {
           {!draft && <div><div className="lbl">Выполнено</div><div className="big">{delivered} / {p.trips.length}</div><div className="lbl">рейсов доставлено</div></div>}
           {canEdit && draft && <button className="btn btn-main" disabled={busy || !p.trips.length} onClick={approve}>Утвердить план</button>}
         </div>
+        {p.blocked.length > 0 && (
+          <div className="alert err">
+            {plural(p.blocked.length, 'рейс назначен', 'рейса назначены', 'рейсов назначены')} на самосвал, который ушёл в ремонт или на ТО. Выберите для {p.blocked.length === 1 ? 'него' : 'них'} другой самосвал — рейсы выделены ниже.
+          </div>
+        )}
         {unplanned.length > 0 && (
           <div className="alert warn">
             Не поместилось в смену — перейдёт в план следующего дня:
@@ -79,14 +84,15 @@ export default function Trips() {
                 </div>
                 {!off && <div className="bar" title={`${h.toFixed(1)} ч из ${SHIFT_H}`}><div style={{ width: `${Math.min(100, h / SHIFT_H * 100)}%` }} /></div>}
                 {list.map(t => (
-                  <div key={t.id} className="trip">
+                  <div key={t.id} className={`trip ${p.blocked.includes(t.id) ? 'blocked' : ''}`}>
                     <div className="n">{t.seq}</div>
                     <div className="grow">
                       <b>{t.client_name}</b> <span className="muted small">{t.order_number}</span>
                       <div className="muted small">{t.quarry_name} → {t.address} · {num(t.distance_km)} км · {m3(t.planned_m3)}{t.heavy_restricted ? ' · ограничение массы' : ''}</div>
                     </div>
-                    {draft && canEdit ? (
+                    {canEdit && (draft || p.blocked.includes(t.id)) ? (
                       <select className="input mini" value={truck.id} onChange={e => move(t, Number(e.target.value))}>
+                        {off && <option value={truck.id} disabled>выбрать…</option>}
                         {p.trucks.filter(x => x.status === 'on_line').map(x => <option key={x.id} value={x.id}>{x.name.replace('Самосвал ', '')}</option>)}
                       </select>
                     ) : <span className={`chip ${TRIP_STATUS[t.status][1]}`}>{TRIP_STATUS[t.status][0]}</span>}

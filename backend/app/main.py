@@ -1,19 +1,19 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from .api import auth, catalog, clients, orders, production, trips
+from .api import auth, catalog, clients, fleet, orders, production, trips
 
 app = FastAPI(
     title="ИИС «Недроресурс»",
     description="Интеллектуальная информационная система управления предприятием: добыча, продажа и доставка песка.",
-    version="0.2.0",
+    version="0.3.0",
     docs_url="/api/docs",
     openapi_url="/api/openapi.json",
 )
 # при разработке интерфейс запускается на другом порту (Vite, 5173)
 app.add_middleware(CORSMiddleware, allow_origins=["http://localhost:5173"], allow_methods=["*"], allow_headers=["*"])
 
-for r in (auth.router, catalog.router, clients.router, orders.router, production.router, trips.router):
+for r in (auth.router, catalog.router, clients.router, orders.router, production.router, trips.router, fleet.router):
     app.include_router(r)
 
 
