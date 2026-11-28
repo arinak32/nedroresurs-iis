@@ -13,13 +13,17 @@ import Layout, { Head, MENU } from './components/Layout'
 import Login from './pages/Login'
 import Orders from './pages/Orders'
 import Stock, { SiteCards } from './pages/Stock'
+import Trips from './pages/Trips'
+import Driver from './pages/Driver'
 
 const qc = new QueryClient({ defaultOptions: { queries: { retry: 1, refetchOnWindowFocus: false } } })
 
-function Guard({ children }: { children: React.ReactNode }) {
+function Guard({ children, driver = false }: { children: React.ReactNode; driver?: boolean }) {
   const { user, loading } = useAuth()
   if (loading) return <div className="spinner">Загрузка…</div>
   if (!user) return <Navigate to="/login" replace />
+  // водитель работает только в своём интерфейсе, сотрудники офиса — в основном
+  if (driver !== (user.role === 'driver')) return <Navigate to={user.role === 'driver' ? '/driver' : '/'} replace />
   return <>{children}</>
 }
 
@@ -42,10 +46,12 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <BrowserRouter>
           <Routes>
             <Route path="/login" element={<Login />} />
+            <Route path="/driver" element={<Guard driver><Driver /></Guard>} />
             <Route element={<Guard><Layout /></Guard>}>
               <Route index element={<Overview />} />
               <Route path="orders" element={<Orders />} />
               <Route path="stock" element={<Stock />} />
+              <Route path="trips" element={<Trips />} />
               <Route path="*" element={<Soon />} />
             </Route>
           </Routes>

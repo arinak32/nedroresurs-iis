@@ -75,6 +75,10 @@ h3 { font-size: 15px; font-weight: 700; margin: 0; }
 .field { display: flex; flex-direction: column; gap: 6px; }
 .field label { font-size: 12px; color: var(--text-2); }
 .input, select.input, textarea.input { border: 1px solid var(--line); border-radius: 12px; padding: 11px 14px; font: inherit; background: #fff; color: var(--text); width: 100%; }
+select.input {
+  appearance: none; -webkit-appearance: none; padding-right: 38px; cursor: pointer;
+  background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%238B8F98' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 16px center;
+}
 .input:focus { outline: 2px solid var(--sand-soft); border-color: var(--sand); }
 .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
@@ -115,3 +119,39 @@ table.t td .sub { font-size: 12px; color: var(--text-2); }
 .login .box { width: 440px; display: flex; flex-direction: column; gap: 18px; }
 .spinner { color: var(--text-2); padding: 20px; }
 @media (max-width: 1000px) { .login .promo { display: none; } .login .form { width: 100%; } }
+
+/* рейсы */
+.banner { background: var(--graphite); color: #fff; border-radius: var(--r-card); padding: 24px 28px; display: flex; align-items: center; gap: 36px; }
+.banner .lbl { color: var(--text-dark); font-size: 12px; }
+.banner .big { font-size: 28px; font-weight: 800; margin: 4px 0; }
+.trucks { display: grid; grid-template-columns: repeat(auto-fill, minmax(420px, 1fr)); gap: 16px; }
+.truck { display: flex; flex-direction: column; gap: 10px; padding: 18px; }
+.truck.off { opacity: .7; }
+.trip { display: flex; align-items: center; gap: 12px; padding: 8px 0; border-top: 1px solid var(--line); }
+.trip .n { width: 26px; height: 26px; border-radius: 8px; background: var(--graphite); color: #fff; display: grid; place-items: center; font-weight: 700; font-size: 12px; flex-shrink: 0; }
+select.input.mini { width: 78px; padding: 6px 28px 6px 10px; background-position: right 10px center; font-size: 13px; }
+
+/* интерфейс водителя (смартфон) */
+.drv { max-width: 480px; margin: 0 auto; padding: 16px; display: flex; flex-direction: column; gap: 14px; min-height: 100vh; }
+.drv-top { display: flex; align-items: center; gap: 12px; }
+.drv-no { width: 46px; height: 46px; border-radius: 12px; background: var(--graphite); color: #fff; display: grid; place-items: center; font-weight: 800; }
+.drv-progress { background: var(--graphite); color: #fff; border-radius: 18px; padding: 16px 18px; display: flex; flex-direction: column; gap: 12px; }
+.drv-progress span { color: var(--sand-soft); font-weight: 700; }
+.segs { display: flex; gap: 6px; }
+.segs div { flex: 1; height: 6px; border-radius: 6px; background: var(--graphite-2); }
+.segs .done { background: var(--sand); }
+.segs .now { background: var(--sand-soft); }
+.drv-steps { display: flex; gap: 8px; }
+.drv-steps span { flex: 1; text-align: center; padding: 10px 6px; border-radius: 100px; background: #fff; border: 1px solid var(--line); font-weight: 600; font-size: 13px; }
+.drv-steps .on { background: var(--sand); color: #fff; border-color: var(--sand); }
+.drv-steps .ok { background: var(--ok-bg); color: var(--ok); border-color: var(--ok-bg); }
+.drv-card { display: flex; flex-direction: column; gap: 14px; padding: 18px; }
+.drv-row { display: flex; gap: 12px; align-items: flex-start; }
+.drv-row .ico { width: 36px; height: 36px; border-radius: 10px; background: var(--sand-light); color: var(--sand); display: grid; place-items: center; font-weight: 800; flex-shrink: 0; }
+.drv-row b { font-size: 16px; }
+.drv-kv { background: var(--page); border-radius: 12px; padding: 10px; display: flex; flex-direction: column; gap: 4px; }
+.drv-kv span { font-size: 12px; color: var(--text-2); }
+.drv-big { padding: 20px; font-size: 18px; border-radius: 18px; margin-top: auto; }
+.drv-vol { display: flex; align-items: center; justify-content: space-between; }
+.drv-vol .btn { width: 64px; height: 64px; font-size: 28px; border-radius: 16px; }
+.drv a.btn { text-decoration: none; }

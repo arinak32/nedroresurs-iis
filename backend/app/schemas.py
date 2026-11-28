@@ -175,3 +175,72 @@ class VehicleOut(ORM):
     capacity_m3: Decimal
     status: VehicleStatus
     odometer_km: int
+
+
+class PlanRequest(BaseModel):
+    plan_date: date
+
+
+class TripOut(BaseModel):
+    id: int
+    seq: int
+    order_id: int
+    order_number: str
+    client_name: str
+    client_phone: str | None
+    address: str | None
+    heavy_restricted: bool
+    product_name: str
+    quarry_name: str | None
+    vehicle_id: int | None
+    vehicle_name: str | None
+    driver_name: str | None
+    planned_m3: Decimal
+    actual_m3: Decimal | None
+    distance_km: Decimal | None
+    status: str
+    loaded_at: datetime | None
+    delivered_at: datetime | None
+
+
+class TruckOut(BaseModel):
+    id: int
+    name: str
+    driver_name: str | None
+    status: str
+
+
+class PlanOut(BaseModel):
+    id: int
+    plan_date: date
+    status: str
+    total_km: Decimal | None
+    trips: list[TripOut]
+    trucks: list[TruckOut]
+    unplanned: list[dict] = []
+    orders_count: int
+
+
+class MoveTrip(BaseModel):
+    vehicle_id: int
+
+
+class DriverEvent(BaseModel):
+    event_id: str | None = Field(default=None, max_length=64)
+
+
+class DeliverIn(DriverEvent):
+    actual_m3: Decimal = Field(gt=0)
+
+
+class DeliverOut(BaseModel):
+    trip: TripOut
+    documents: list[str]
+
+
+class DriverDay(BaseModel):
+    driver_name: str
+    vehicle_name: str | None
+    vehicle_model: str | None
+    plan_date: date
+    trips: list[TripOut]

@@ -63,3 +63,20 @@ export interface Quote {
 export interface Site { id: number; name: string; product_name: string; capacity_m3: string; volume_m3: string; fill_pct: number }
 export interface Quarry { id: number; name: string; site_id: number }
 export interface ProductionRow { id: number; shift_date: string; quarry_name: string; product_name: string; volume_m3: string; author: string | null }
+
+export type TripStatus = 'planned' | 'en_route' | 'delivered' | 'cancelled'
+export interface Trip {
+  id: number; seq: number; order_id: number; order_number: string; client_name: string; client_phone: string | null
+  address: string | null; heavy_restricted: boolean; product_name: string; quarry_name: string | null
+  vehicle_id: number | null; vehicle_name: string | null; driver_name: string | null
+  planned_m3: string; actual_m3: string | null; distance_km: string | null; status: TripStatus
+  loaded_at: string | null; delivered_at: string | null
+}
+export interface Truck { id: number; name: string; driver_name: string | null; status: string }
+export interface Plan {
+  id: number; plan_date: string; status: 'draft' | 'approved'; total_km: string | null; trips: Trip[]; trucks: Truck[]
+  unplanned: { order_id: number; order_number: string; volume_m3: string }[]; orders_count: number
+}
+export interface DriverDay { driver_name: string; vehicle_name: string | null; vehicle_model: string | null; plan_date: string; trips: Trip[] }
+
+export const patch = <T,>(url: string, body?: unknown) => request<T>('PATCH', url, body)

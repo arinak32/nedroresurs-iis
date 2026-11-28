@@ -117,7 +117,7 @@ export default function Orders() {
               <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginTop: 8 }}>
                 {(ACTIONS[sel.status] ?? []).filter(([a]) => a === 'confirm' ? !!sel.contract_number : a === 'issue_invoice' ? !sel.contract_number : true).map(([a, label, cls]) => <button key={a} className={`btn ${cls}`} onClick={() => act(a)}>{label}</button>)}
                 {sel.status === 'planning' && sel.method === 'pickup' && <button className="btn btn-main" onClick={() => act('pickup')}>Отгружено в транспорт клиента</button>}
-                {sel.status === 'planning' && sel.method === 'delivery' && <div className="muted small">Заказ попадёт в план рейсов (раздел «Рейсы» — следующий этап разработки)</div>}
+                {sel.status === 'planning' && sel.method === 'delivery' && <div className="muted small">Заказ попадёт в план рейсов: раздел «Рейсы» → «Рассчитать план»</div>}
                 {['new', 'awaiting_payment', 'planning'].includes(sel.status) && <button className="btn btn-text" onClick={() => confirm('Отменить заказ?') && act('cancel')}>Отменить заказ</button>}
               </div>
             )}
