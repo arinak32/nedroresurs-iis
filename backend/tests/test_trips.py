@@ -115,4 +115,6 @@ def test_shift_limit_leaves_trips_unplanned(client, manager):
     # 30 рейсов по ~23 км: 8 самосвалов × 12 ч вмещают не все
     make_delivery_order(client, manager, volume=3000)
     p = client.post("/api/route-plans", headers=manager, json={"plan_date": TODAY}).json()
-    assert p["unplanned"] and len(p["trips"]) + len(p["unplanned"]) == 100
+    assert len(p["unplanned"]) == 1                      # один заказ — одна строка, а не по строке на рейс
+    u = p["unplanned"][0]
+    assert len(p["trips"]) + u["trips"] == 100 and float(u["volume_m3"]) == 3000 - 30 * len(p["trips"])

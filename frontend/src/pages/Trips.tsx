@@ -57,7 +57,11 @@ export default function Trips() {
           {canEdit && draft && <button className="btn btn-main" disabled={busy || !p.trips.length} onClick={approve}>Утвердить план</button>}
         </div>
         {unplanned.length > 0 && (
-          <div className="alert warn">Не поместились в смену: {unplanned.map(u => `${u.order_number} (${num(u.volume_m3)} м³)`).join(', ')}. Они перейдут в план следующего дня.</div>
+          <div className="alert warn">
+            Не поместилось в смену — перейдёт в план следующего дня:
+            {unplanned.map(u => <div key={u.order_id} style={{ fontWeight: 500, marginTop: 4 }}>
+              {u.order_number} · {u.client_name} — {m3(u.volume_m3)}, {plural(u.trips, 'рейс', 'рейса', 'рейсов')}</div>)}
+          </div>
         )}
         <div className="trucks">
           {p.trucks.map(truck => {

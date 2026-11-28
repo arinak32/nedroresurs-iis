@@ -77,7 +77,13 @@ def build_plan(db: Session, plan_date: date) -> tuple[RoutePlan, list[dict]]:
             vol = min(truck_cap, rest)
             truck = min(trucks, key=lambda t: (load[t.id], t.id))
             if load[truck.id] + hours > SHIFT_H:
-                unplanned.append({"order_id": order.id, "order_number": order.number, "volume_m3": vol})
+                # не помещается в смену ни у одного самосвала — копим по заказу, а не по рейсу
+                if unplanned and unplanned[-1]["order_id"] == order.id:
+                    unplanned[-1]["volume_m3"] += vol
+                    unplanned[-1]["trips"] += 1
+                else:
+                    unplanned.append({"order_id": order.id, "order_number": order.number, "client_name": order.client.name,
+                                      "volume_m3": vol, "trips": 1})
                 rest -= vol
                 continue
             load[truck.id] += hours

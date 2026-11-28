@@ -75,7 +75,7 @@ export interface Trip {
 export interface Truck { id: number; name: string; driver_name: string | null; status: string }
 export interface Plan {
   id: number; plan_date: string; status: 'draft' | 'approved'; total_km: string | null; trips: Trip[]; trucks: Truck[]
-  unplanned: { order_id: number; order_number: string; volume_m3: string }[]; orders_count: number
+  unplanned: { order_id: number; order_number: string; client_name: string; volume_m3: string; trips: number }[]; orders_count: number
 }
 export interface DriverDay { driver_name: string; vehicle_name: string | null; vehicle_model: string | null; plan_date: string; trips: Trip[] }
 
